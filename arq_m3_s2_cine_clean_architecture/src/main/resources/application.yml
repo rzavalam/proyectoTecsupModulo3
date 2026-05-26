@@ -3,7 +3,7 @@ spring:
     name: banco-digital-clean
   
   datasource:
-    url: jdbc:h2:mem:bancodb
+    url: jdbc:h2:mem:cinedb
     driver-class-name: org.h2.Driver
     username: sa
     password:
