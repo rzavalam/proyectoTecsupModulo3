@@ -1,1 +1,0 @@
-# proyectoTecsupModulo3
