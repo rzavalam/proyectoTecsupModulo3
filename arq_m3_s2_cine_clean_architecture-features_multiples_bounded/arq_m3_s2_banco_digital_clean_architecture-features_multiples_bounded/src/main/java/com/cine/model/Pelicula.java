@@ -1,8 +1,12 @@
 package com.cine.model;
 
-import com.cine.model.enums.EstadoPelicula;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pelicula")
@@ -13,20 +17,23 @@ import lombok.*;
 public class Pelicula {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pelicula")
-    private Integer idPelicula;
+    @Column(name = "pelicula_id", length = 50)
+    private String idPelicula;
 
-    @Column(nullable = false, length = 200)
-    private String titulo;
+    @Column(name = "titulo_pelicula", nullable = false, unique = true, length = 100)
+    private String tituloPelicula;
 
-    @Column(name = "duracion_minutos", nullable = false)
-    private Integer duracionMinutos;
+    @Column(nullable = false, precision = 5, scale = 2)
+    private BigDecimal duracion;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 20)
     private String clasificacion;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private EstadoPelicula estado;
+    @CreationTimestamp
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    @UpdateTimestamp
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
 }
