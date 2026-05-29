@@ -1,57 +1,54 @@
 package com.banco.accounts.infrastructure.notification;
 
-import com.banco.transactions.application.usecase.TransferMoneyUseCase;
+import com.banco.accounts.application.dto.CrearFuncionCommand;
+import com.banco.accounts.domain.model.FuncionCine;
+import com.banco.accounts.domain.repository.FuncionRepository;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * ADAPTER: Implementa NotificationPort usando consola
+ * CAPA 4 - INFRASTRUCTURE / Notification
+ * Implementación del puerto de notificación vía consola.
+ * Puede reemplazarse por email, SMS, etc. sin tocar el dominio.
  */
+@Slf4j
 @Component
-public class ConsoleNotificationAdapter implements TransferMoneyUseCase.NotificationPort {
-    
-    @Override
-    public void notifyTransferSent(String holderName, String amount, 
-                                   String toAccount, String newBalance) {
-        String message = String.format("""
-            
-            ═══════════════════════════════════════════════
-            NOTIFICACIÓN - TRANSFERENCIA ENVIADA
-            ═══════════════════════════════════════════════
-            Estimado/a %s:
-            
-            ✓ Se ha realizado una transferencia desde su cuenta
-            
-            Monto enviado:    %s
-            Cuenta destino:   %s
-            Su nuevo saldo:   %s
-            
-            Gracias por usar Banco Digital
-            ═══════════════════════════════════════════════
-            """, holderName, amount, toAccount, newBalance);
-        
-        System.out.println(message);
+public class ConsoleNotificationAdapter {
+
+    /**
+     * Notificación cuando una función es creada
+     */
+    public void notificarFuncionCreada(
+            String funcionId,
+            CrearFuncionCommand command) {
+
+        log.info("🎬 FUNCIÓN CREADA");
+        log.info("   ID Función     : {}", funcionId);
+        log.info("   Sala           : {}", command.getSalaId());
+        log.info("   Película       : {}", command.getPeliculaId());
+        log.info("   Horario Inicio : {}", command.getHorarioInicio());
+        log.info("   Precio         : S/ {}", command.getPrecio());
+        log.info("   Tipo Función   : {}", command.getTipoFuncion());
     }
-    
-    @Override
-    public void notifyTransferReceived(String holderName, String amount,
-                                       String fromAccount, String newBalance) {
-        String message = String.format("""
-            
-            ═══════════════════════════════════════════════
-            NOTIFICACIÓN - TRANSFERENCIA RECIBIDA
-            ═══════════════════════════════════════════════
-            Estimado/a %s:
-            
-            ✓ Ha recibido una transferencia en su cuenta
-            
-            Monto recibido:   %s
-            Cuenta origen:    %s
-            Su nuevo saldo:   %s
-            
-            Gracias por usar Banco Digital
-            ═══════════════════════════════════════════════
-            """, holderName, amount, fromAccount, newBalance);
-        
-        System.out.println(message);
+
+    /**
+     * Notificación cuando una función es cancelada
+     */
+    public void notificarFuncionCancelada(
+            String funcionId) {
+
+        log.info("❌ FUNCIÓN CANCELADA");
+        log.info("   ID Función : {}", funcionId);
+    }
+
+    /**
+     * Notificación cuando una función finaliza
+     */
+    public void notificarFuncionFinalizada(
+            String funcionId) {
+
+        log.info("✅ FUNCIÓN FINALIZADA");
+        log.info("   ID Función : {}", funcionId);
     }
 }

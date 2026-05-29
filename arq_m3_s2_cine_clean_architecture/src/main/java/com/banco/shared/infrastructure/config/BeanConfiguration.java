@@ -1,10 +1,11 @@
 package com.banco.shared.infrastructure.config;
 
-import com.banco.accounts.application.usecase.CreateAccountUseCase;
-import com.banco.accounts.application.usecase.GetBalanceUseCase;
-import com.banco.transactions.application.usecase.TransferMoneyUseCase;
-import com.banco.transactions.domain.model.Transfer;
-import com.banco.accounts.domain.repository.AccountRepository;
+import com.banco.accounts.application.usecase.ConsultarFuncionesDisponiblesUseCase;
+import com.banco.accounts.application.usecase.CrearFuncionUseCase;
+import com.banco.accounts.domain.repository.FuncionRepository;
+import com.banco.accounts.domain.repository.PeliculaRepository;
+import com.banco.accounts.domain.repository.SalaRepository;
+import com.banco.accounts.infrastructure.notification.ConsoleNotificationAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,27 +21,45 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class BeanConfiguration {
-    
+
+
     @Bean
-    public Transfer transferService() {
-        return new Transfer();
+    public CrearFuncionUseCase crearFuncionUseCase(
+            FuncionRepository funcionRepository,
+            ConsoleNotificationAdapter notificationAdapter,
+            SalaRepository salaRepository,
+            PeliculaRepository peliculaRepository
+            ) {
+
+        return new CrearFuncionUseCase(
+                funcionRepository,
+                notificationAdapter,
+                salaRepository,
+                peliculaRepository
+
+
+        );
     }
-    
+
     @Bean
-    public CreateAccountUseCase createAccountUseCase(AccountRepository accountRepository) {
-        return new CreateAccountUseCase(accountRepository);
+    public ConsultarFuncionesDisponiblesUseCase
+    consultarFuncionesDisponiblesUseCase(
+            FuncionRepository funcionRepository) {
+
+        return new ConsultarFuncionesDisponiblesUseCase(
+                funcionRepository
+        );
     }
-    
-    @Bean
-    public TransferMoneyUseCase transferMoneyUseCase(
-            AccountRepository accountRepository,
-            Transfer transferService,
-            TransferMoneyUseCase.NotificationPort notificationPort) {
-        return new TransferMoneyUseCase(accountRepository, transferService, notificationPort);
-    }
-    
-    @Bean
-    public GetBalanceUseCase getBalanceUseCase(AccountRepository accountRepository) {
-        return new GetBalanceUseCase(accountRepository);
-    }
+
+    /*@Bean
+    public ConsultarAsientosDisponiblesUseCase
+    consultarAsientosDisponiblesUseCase(
+            FuncionRepository funcionRepository,
+            SalaRepository salaRepository) {
+
+        return new ConsultarAsientosDisponiblesUseCase(
+                funcionRepository,
+                salaRepository
+        );
+    }*/
 }
