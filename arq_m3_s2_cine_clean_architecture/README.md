@@ -1,101 +1,97 @@
-#  Banco Digital - Clean Architecture + DDD 
+#  Sistema de Reserva de Cine - Clean Architecture + DDD 
 
-Sistema bancario simple que implementa **Domain-Driven Design (DDD)** y **Clean Architecture** con Spring Boot
+Sistema de Reserva de Cine que implementa **Domain-Driven Design (DDD)** y **Clean Architecture** con Spring Boot
 
 ## Funcionalidades
 
-- Crear cuentas bancarias
-- Transferir dinero entre cuentas
-- Consultar saldo
-- Validación de saldo suficiente
-- Notificaciones por consola
+- Gestion de Funciones
+    Funcion Creada
+    Consultar Funciones
+
+- Gestion de Reservas
+- Gestion de Clientes
+- Gestion de Pagos
+- Notificacionesa
 
 ## Estructura del Proyecto
 
-```
-├── pom.xml
-├── README.md
-└── src
-    ├── main
-    │   ├── java
-    │   │   └── com
-    │   │       └── banco
-    │   │           ├── accounts
-    │   │           │   ├── application
-    │   │           │   │   ├── dto
-    │   │           │   │   │   └── CreateAccountCommand.java
-    │   │           │   │   └── usecase
-    │   │           │   │       ├── CreateAccountUseCase.java
-    │   │           │   │       └── GetBalanceUseCase.java
-    │   │           │   ├── domain
-    │   │           │   │   ├── exception
-    │   │           │   │   │   ├── AccountNotFoundException.java
-    │   │           │   │   │   └── InsufficientFundsException.java
-    │   │           │   │   ├── model
-    │   │           │   │   │   ├── AccountStatus.java
-    │   │           │   │   │   └── BankAccount.java
-    │   │           │   │   └── repository
-    │   │           │   │       └── AccountRepository.java
-    │   │           │   ├── infrastructure
-    │   │           │   │   ├── notification
-    │   │           │   │   │   └── ConsoleNotificationAdapter.java
-    │   │           │   │   ├── persistence
-    │   │           │   │   │   ├── adapter
-    │   │           │   │   │   │   └── AccountRepositoryAdapter.java
-    │   │           │   │   │   ├── entity
-    │   │           │   │   │   │   └── AccountEntity.java
-    │   │           │   │   │   ├── mapper
-    │   │           │   │   │   │   └── AccountMapper.java
-    │   │           │   │   │   └── repository
-    │   │           │   │   │       └── JpaAccountRepository.java
-    │   │           │   │   └── web
-    │   │           │   │       ├── controller
-    │   │           │   │       │   └── AccountController.java
-    │   │           │   │       └── dto
-    │   │           │   │           ├── AccountResponse.java
-    │   │           │   │           └── CreateAccountRequest.java
-    │   │           │   └── README.md
-    │   │           ├── BancoDigitalApplication.java
-    │   │           ├── shared
-    │   │           │   ├── domain
-    │   │           │   │   ├── exception
-    │   │           │   │   │   └── DomainException.java
-    │   │           │   │   └── model
-    │   │           │   │       └── Money.java
-    │   │           │   ├── infrastructure
-    │   │           │   │   └── config
-    │   │           │   │       └── BeanConfiguration.java
-    │   │           │   └── README.md
-    │   │           └── transactions
-    │   │               ├── application
-    │   │               │   ├── dto
-    │   │               │   │   └── TransferCommand.java
-    │   │               │   └── usecase
-    │   │               │       └── TransferMoneyUseCase.java
-    │   │               ├── domain
-    │   │               │   ├── model
-    │   │               │   │   └── Transfer.java
-    │   │               │   └── repository
-    │   │               ├── infrastructure
-    │   │               │   ├── persistence
-    │   │               │   └── web
-    │   │               │       ├── controller
-    │   │               │       │   └── TransactionController.java
-    │   │               │       └── dto
-    │   │               │           └── TransferRequest.java
-    │   │               └── README.md
-    │   └── resources
-    │       └── application.yml
-    └── test
-        └── java
-            └── com
-                └── banco
-                    ├── accounts
-                    │   └── domain
-                    │       └── model
-                    │           └── BankAccountTest.java
-                    └── shared
-                        └── domain
-                            └── model
-                                └── MoneyTest.java
-```
+├── accounts
+│   │
+│   ├── application
+│   │   │
+│   │   ├── dto
+│   │   │   ├── AsientoDisponibleResponse.java
+│   │   │   └── CrearFuncionCommand.java
+│   │   │
+│   │   ├── port
+│   │   │   └── output
+│   │   │       └── NotificationPort.java
+│   │   │
+│   │   └── usecase
+│   │       ├── ConsultarFuncionesDisponiblesUseCase.java
+│   │       └── CrearFuncionUseCase.java
+│   │
+│   ├── domain
+│   │   │
+│   │   ├── exception
+│   │   │   ├── PeliculaNoEncontradaException.java
+│   │   │   └── SalaNoEncontradaException.java
+│   │   │
+│   │   ├── model
+│   │   │   ├── EstadoFuncion.java
+│   │   │   ├── FuncionCine.java
+│   │   │   └── TipoFuncion.java
+│   │   │
+│   │   └── repository
+│   │       ├── FuncionRepository.java
+│   │       ├── PeliculaRepository.java
+│   │       └── SalaRepository.java
+│   │
+│   ├── infrastructure
+│   │   │
+│   │   ├── notification
+│   │   │   └── ConsoleNotificationAdapter.java
+│   │   │
+│   │   ├── persistence
+│   │   │   │
+│   │   │   ├── adapter
+│   │   │   │   ├── FuncionRepositoryAdapter.java
+│   │   │   │   ├── PeliculaRepositoryAdapter.java
+│   │   │   │   └── SalaRepositoryAdapter.java
+│   │   │   │
+│   │   │   ├── entity
+│   │   │   │   ├── FuncionCineEntity.java
+│   │   │   │   ├── PeliculaEntity.java
+│   │   │   │   └── SalaEntity.java
+│   │   │   │
+│   │   │   ├── mapper
+│   │   │   │   └── FuncionMapper.java
+│   │   │   │
+│   │   │   └── repository
+│   │   │       ├── JpaFuncionRepository.java
+│   │   │       ├── JpaPeliculaRepository.java
+│   │   │       └── JpaSalaRepository.java
+│   │   │
+│   │   └── web
+│   │       │
+│   │       ├── controller
+│   │       │   └── FuncionController.java
+│   │       │
+│   │       └── dto
+│   │           ├── CrearFuncionRequest.java
+│   │           └── FuncionResponse.java
+│   │
+│   └── README.md
+│
+└── shared
+│
+├── domain
+│   └── exception
+│       ├── DomainException.java
+│       └── GlobalExceptionHandler.java
+│
+├── infrastructure
+│   └── config
+│       └── BeanConfiguration.java
+│
+└── README.md
