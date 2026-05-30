@@ -9,7 +9,6 @@ import com.banco.accounts.domain.model.FuncionCine;
 import com.banco.accounts.domain.repository.FuncionRepository;
 import com.banco.accounts.domain.repository.PeliculaRepository;
 import com.banco.accounts.domain.repository.SalaRepository;
-import com.banco.accounts.domain.services.FuncionDomainService;
 import com.banco.accounts.infrastructure.notification.ConsoleNotificationAdapter;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +21,13 @@ public class CrearFuncionUseCase {
 
     private final FuncionRepository funcionRepository;
     private final ConsoleNotificationAdapter notificationAdapter;
-    private final FuncionDomainService funcionDomainService;
+    private final SalaRepository salaRepository;
+    private final PeliculaRepository peliculaRepository;
 
     public FuncionCine ejecutar(CrearFuncionCommand command) {
 
-
+        validarSala(command.getSalaId());
+        validarPelicula(command.getPeliculaId());
 
         FuncionCine funcion = new FuncionCine(
                 command.getSalaId(),
@@ -36,15 +37,6 @@ public class CrearFuncionUseCase {
                 command.getTipoFuncion()
         );
 
-        funcionDomainService.validarSala(
-                command.getSalaId());
-
-        funcionDomainService.validarPelicula(
-                command.getPeliculaId());
-
-        funcionDomainService.validarHorario(
-                command.getHorarioInicio());
-        
         FuncionCine saved = funcionRepository.guardar(funcion);
 
         notificationAdapter.notificarFuncionCreada(
@@ -55,5 +47,28 @@ public class CrearFuncionUseCase {
         return saved;
     }
 
+    private void validarSala(String salaId) {
 
+        if (!salaRepository.existeSala(salaId)) {
+            throw new SalaNoEncontradaException(salaId);
+        }
+    }
+
+    private void validarPelicula(String peliculaId) {
+
+        if (!peliculaRepository.existePelicula(peliculaId)) {
+            throw new PeliculaNoEncontradaException(
+                    peliculaId
+            );
+        }
+    }
+
+    private void validarHorario(
+            LocalDateTime horarioInicio) {
+
+        if (horarioInicio.isBefore(LocalDateTime.now())) {
+
+            throw new HorarioFuncionInvalidoException();
+        }
+    }
 }
