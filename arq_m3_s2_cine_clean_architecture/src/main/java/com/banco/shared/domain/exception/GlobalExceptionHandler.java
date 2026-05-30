@@ -1,5 +1,6 @@
 package com.banco.shared.domain.exception;
 
+import com.banco.accounts.domain.exception.HorarioFuncionInvalidoException;
 import com.banco.accounts.domain.exception.PeliculaNoEncontradaException;
 import com.banco.accounts.domain.exception.SalaNoEncontradaException;
 import org.springframework.http.HttpStatus;
@@ -74,5 +75,18 @@ public class GlobalExceptionHandler {
                                 "message", ex.getMessage()
                         )
                 );
+    }
+
+    @ExceptionHandler(HorarioFuncionInvalidoException.class)
+    public ResponseEntity<?> manejarHorario(
+            HorarioFuncionInvalidoException ex) {
+
+        return ResponseEntity.badRequest().body(
+                Map.of(
+                        "status", 400,
+                        "error", "Horario inválido",
+                        "message", ex.getMessage()
+                )
+        );
     }
 }

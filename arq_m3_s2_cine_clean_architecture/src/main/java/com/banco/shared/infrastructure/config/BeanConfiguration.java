@@ -5,6 +5,7 @@ import com.banco.accounts.application.usecase.CrearFuncionUseCase;
 import com.banco.accounts.domain.repository.FuncionRepository;
 import com.banco.accounts.domain.repository.PeliculaRepository;
 import com.banco.accounts.domain.repository.SalaRepository;
+import com.banco.accounts.domain.services.FuncionDomainService;
 import com.banco.accounts.infrastructure.notification.ConsoleNotificationAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,18 +25,27 @@ public class BeanConfiguration {
 
 
     @Bean
+    public FuncionDomainService funcionDomainService(
+            SalaRepository salaRepository,
+            PeliculaRepository peliculaRepository) {
+
+        return new FuncionDomainService(
+                salaRepository,
+                peliculaRepository
+        );
+    }
+
+    @Bean
     public CrearFuncionUseCase crearFuncionUseCase(
             FuncionRepository funcionRepository,
             ConsoleNotificationAdapter notificationAdapter,
-            SalaRepository salaRepository,
-            PeliculaRepository peliculaRepository
+            FuncionDomainService funcionDomainService
             ) {
 
         return new CrearFuncionUseCase(
                 funcionRepository,
                 notificationAdapter,
-                salaRepository,
-                peliculaRepository
+                funcionDomainService
 
 
         );
