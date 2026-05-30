@@ -1,7 +1,8 @@
-Base de Datos
+# Base de Datos
 
-Creación de Tablas
+## Creación de Tablas
 
+```sql
 CREATE TABLE sala (
     sala_id VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -36,12 +37,15 @@ CREATE TABLE funcion_cine (
         FOREIGN KEY (pelicula_id)
         REFERENCES pelicula(pelicula_id)
 );
+```
 
+---
 
-Datos Iniciales
+## Datos Iniciales
 
-Salas
+### Sala
 
+```sql
 INSERT INTO sala (
     sala_id,
     nombre,
@@ -51,7 +55,11 @@ INSERT INTO sala (
     'Sala Premier',
     120
 );
-Películas
+```
+
+### Película
+
+```sql
 INSERT INTO pelicula (
     pelicula_id,
     titulo_pelicula,
@@ -63,7 +71,11 @@ INSERT INTO pelicula (
     181.00,
     'PG-13'
 );
-Funciones de Cine
+```
+
+### Función de Cine
+
+```sql
 INSERT INTO funcion_cine (
     funcion_cine_id,
     sala_id,
@@ -85,3 +97,6 @@ INSERT INTO funcion_cine (
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
 );
+```
+
+---
